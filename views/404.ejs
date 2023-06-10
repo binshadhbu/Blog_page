@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><title>Document<%= title %></title></head>
+    <%- include('./partials/head.ejs')%>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,26 +8,13 @@
 </head>
 
 <body>
-    <nav>
-        <div class="site-title">
-            <a href="/">
-                <h1>Blog</h1>
-            </a>
-            <p>A net ninjas site</p>
-        </div>
-        <ul>
-            <li>
-                <a href="/">Blogs</a>
-            </li>
-            <li>
-                <a href="/about.ejs">about</a>
-            </li>
-            <li><a href="/blogs/create">new blog</a></li>
-        </ul>
-    </nav>
+    <%- include('./partials/nav.ejs')%>
+
     <div class="blog content">
         <h2>not found</h2>
     </div>
+    <%- include('./partials/footer.ejs')%>
+
 </body>
 
 </html>

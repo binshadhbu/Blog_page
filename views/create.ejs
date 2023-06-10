@@ -1,23 +1,8 @@
 <html lang="en">
-<head><title>Document<%= title %></title></head>
+    <%- include('./partials/head.ejs')%>
 <body>
-    <nav>
-        <div class="site-title">
-            <a href="/">
-                <h1>Blog</h1>
-            </a>
-            <p>A net ninjas site</p>
-        </div>
-        <ul>
-            <li>
-                <a href="/">Blogs</a>
-            </li>
-            <li>
-                <a href="/about">about</a>
-            </li>
-            <li><a href="/blogs/create">new blog</a></li>
-        </ul>
-    </nav>
+    <%- include('./partials/nav.ejs')%>
+
 
     <div class="create-blog content">
         <form>
@@ -30,6 +15,8 @@
             <button>Submit</button>
         </form>
     </div>
+    <%- include('./partials/footer.ejs')%>
+
 
 
 </body>
