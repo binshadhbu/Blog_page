@@ -1,64 +1,43 @@
 const express = require("express");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
-const Blog = require("./models/blog");
+const blogRoutes = require("./routes/blogRoutes");
+
+// express app
 const app = express();
 
+// connect to mongodb & listen for requests
 const dbURI =
-  "mongodb+srv://binshadhubasheer:test123@cluster0.paaykbv.mongodb.net/binshadhubasheer";
+  "mongodb+srv://<username>:<password>@cluster0.paaykbv.mongodb.net/binshadhubasheer";
+
 mongoose
   .connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("connected to db"))
+  .then((result) => app.listen(3000))
   .catch((err) => console.log(err));
 
+// register view engine
 app.set("view engine", "ejs");
-app.listen(3000);
-app.use(express.static("public"));
-app.use(express.urlencoded({extended:true})); 
-app.use(morgan("dev"));
 
+// middleware & static files
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
+app.use(morgan("dev"));
+app.use((req, res, next) => {
+  res.locals.path = req.path;
+  next();
+});
+
+// routes
 app.get("/", (req, res) => {
   res.redirect("/blogs");
 });
 
-// Route for about page
 app.get("/about", (req, res) => {
-  // Display about.html
-  res.render("about", { title: " about" });
+  res.render("about", { title: "About" });
 });
 
-// Redirect /about-us to /about
-app.get("/about-us", (req, res) => {
-  res.redirect("about", { title: "about" });
-});
-
-app.get("/blogs", (req, res) => {
-  Blog.find()
-    .sort({ createdAt: -1 })
-    .then((result) => {
-      res.render("index", { title: "AllBlogs", blogs: result });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-});
-
-app.post('/blogs',(req,res)=>{
-  console.log(req.body);
-  const blog=new Blog(req.body);
-  blog.save().then((resule)=>{
-    res.redirect('/blogs'); 
-  }).catch((err)=>{
-    console.log(err);
-  });
-});
-
-app.get("/blogs/create", (re, res) => {
-  res.render("create", { title: "create" });
-});
-
-// 404 error page
+app.use('/blogs',blogRoutes);
+// 404 page
 app.use((req, res) => {
-  // Display 404.html
   res.status(404).render("404", { title: "404" });
 });
